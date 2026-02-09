@@ -3,52 +3,6 @@
 import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
-import Image from 'next/image'
-
-const DishCard = ({ dish, index }: any) => {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay: index * 0.1 }}
-      className="group cursor-pointer"
-    >
-      <div className="relative h-80 overflow-hidden rounded-sm mb-6">
-        <Image
-          src={dish.image}
-          alt={dish.name}
-          fill
-          className="object-cover group-hover:scale-110 transition-transform duration-700"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/50 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
-        
-        {/* Price Badge */}
-        <div className="absolute top-4 right-4 bg-primary-600/90 backdrop-blur-sm text-white px-4 py-2 rounded-sm font-medium">
-          {dish.price}€
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-2xl font-serif font-bold text-white mb-3 group-hover:text-primary-400 transition-colors duration-300">
-          {dish.name}
-        </h3>
-        <p className="text-gray-400 leading-relaxed mb-4">
-          {dish.description}
-        </p>
-        {dish.allergens && (
-          <p className="text-xs text-gray-600 italic">
-            Alérgenos: {dish.allergens}
-          </p>
-        )}
-      </div>
-    </motion.div>
-  )
-}
 
 const MenuCard = ({ menu, index }: any) => {
   const ref = useRef(null)
@@ -96,54 +50,84 @@ const MenuCard = ({ menu, index }: any) => {
   )
 }
 
+const SimpleMenuItem = ({ item, index }: any) => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: -20 }}
+      animate={isInView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
+      className="flex justify-between items-start gap-4 border-b border-gray-800 pb-4"
+    >
+      <div className="flex-1">
+        <h4 className="text-lg font-serif font-bold text-white mb-1">{item.name}</h4>
+        {item.description && (
+          <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
+        )}
+        {item.allergens && (
+          <p className="text-xs text-gray-600 italic mt-1">Alérgenos: {item.allergens}</p>
+        )}
+      </div>
+      <div className="text-primary-400 font-bold text-lg whitespace-nowrap">{item.price}€</div>
+    </motion.div>
+  )
+}
+
 export default function Menu() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [activeTab, setActiveTab] = useState<'dishes' | 'menus'>('dishes')
+  const [activeTab, setActiveTab] = useState<'entrantes' | 'principales' | 'arroces' | 'postres' | 'bebidas' | 'menus'>('entrantes')
 
-  const dishes = [
-    {
-      name: 'Pulpo a la Brasa',
-      description: 'Pulpo de roca, crema de patata ahumada, pimentón de la Vera y aceite de oliva virgen extra.',
-      price: 28,
-      image: 'https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?q=80&w=2940&auto=format&fit=crop',
-      allergens: 'Moluscos, sulfitos',
-    },
-    {
-      name: 'Chuletón de Buey Gallego',
-      description: 'Madurado 45 días, a la brasa de encina. Acompañado de pimientos de padrón y patatas panaderas.',
-      price: 65,
-      image: 'https://images.unsplash.com/photo-1558030006-450675393462?q=80&w=2831&auto=format&fit=crop',
-      allergens: 'Sin alérgenos declarados',
-    },
-    {
-      name: 'Lubina Salvaje',
-      description: 'A la sal y brasa, con verduras de temporada asadas y salsa verde de perejil.',
-      price: 42,
-      image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=2940&auto=format&fit=crop',
-      allergens: 'Pescado, huevo',
-    },
-    {
-      name: 'Arroz Meloso de Bogavante',
-      description: 'Arroz bomba, bogavante de lonja, fumet casero y alioli suave.',
-      price: 35,
-      image: 'https://images.unsplash.com/photo-1534080564583-6be75777b70a?q=80&w=2940&auto=format&fit=crop',
-      allergens: 'Crustáceos, moluscos, huevo',
-    },
-    {
-      name: 'Alcachofas Braseadas',
-      description: 'Alcachofas confitadas, jamón ibérico crujiente, huevo a baja temperatura y trufa negra.',
-      price: 24,
-      image: 'https://images.unsplash.com/photo-1606755962773-d324e0a0c7b0?q=80&w=2787&auto=format&fit=crop',
-      allergens: 'Huevo, cerdo',
-    },
-    {
-      name: 'Tarta de Queso Braseada',
-      description: 'Tarta de queso artesanal con toque ahumado, compota de frutos rojos y helado de vainilla.',
-      price: 12,
-      image: 'https://images.unsplash.com/photo-1524351199678-941a58a3df50?q=80&w=2942&auto=format&fit=crop',
-      allergens: 'Lácteos, gluten, huevo',
-    },
+  const entrantes = [
+    { name: 'Carpaccio de Gamba Roja', description: 'Gamba de Huelva con aceite de arbequina y láminas de parmesano', price: 26, allergens: 'Crustáceos, lácteos' },
+    { name: 'Tartar de Atún Rojo', description: 'Atún de Almadraba, aguacate, sésamo y vinagreta de cítricos', price: 24, allergens: 'Pescado, sésamo' },
+    { name: 'Pulpo a la Brasa', description: 'Pulpo de roca, crema de patata ahumada y pimentón de la Vera', price: 28, allergens: 'Moluscos, sulfitos' },
+    { name: 'Alcachofas Confitadas', description: 'Con jamón ibérico crujiente, huevo a baja temperatura y trufa negra', price: 24, allergens: 'Huevo, cerdo' },
+    { name: 'Burrata Italiana', description: 'Con tomates cherry asados, albahaca fresca y reducción de módena', price: 18, allergens: 'Lácteos' },
+    { name: 'Croquetas de Rabo de Toro', description: 'Receta tradicional con bechamel casera (6 uds)', price: 16, allergens: 'Gluten, lácteos, huevo' },
+    { name: 'Ensalada de Perdiz Escabechada', description: 'Brotes frescos, verduras de temporada y vinagreta de romero', price: 22, allergens: 'Sulfitos' },
+    { name: 'Navajas a la Plancha', description: 'Con ajo, perejil y limón', price: 32, allergens: 'Moluscos' },
+  ]
+
+  const principales = [
+    { name: 'Chuletón de Buey Gallego (1kg)', description: 'Madurado 45 días, a la brasa de encina. Para compartir', price: 85, allergens: 'Sin alérgenos' },
+    { name: 'Entrecot de Angus (400g)', description: 'Con patatas panaderas y pimientos de padrón', price: 48, allergens: 'Sin alérgenos' },
+    { name: 'Secreto Ibérico a la Brasa', description: 'Con puré de manzana y cebolla caramelizada', price: 32, allergens: 'Cerdo' },
+    { name: 'Cordero Lechal Asado', description: 'Al horno de leña con guarnición de temporada (min. 2 personas)', price: 45, allergens: 'Sin alérgenos' },
+    { name: 'Lubina Salvaje a la Sal', description: 'Con verduras asadas y salsa verde de perejil', price: 42, allergens: 'Pescado, huevo' },
+    { name: 'Rodaballo a la Brasa', description: 'Con caviar de berenjena ahumada y aceite de ajo negro', price: 48, allergens: 'Pescado' },
+    { name: 'Presa Ibérica de Bellota', description: 'Con patatas a lo pobre y pimientos del piquillo', price: 36, allergens: 'Sin alérgenos' },
+    { name: 'Merluza a la Vasca', description: 'Con almejas, espárragos y salsa de perejil', price: 38, allergens: 'Pescado, moluscos' },
+  ]
+
+  const arroces = [
+    { name: 'Arroz Meloso de Bogavante', description: 'Arroz bomba, bogavante de lonja y fumet casero (min. 2 pers)', price: 35, allergens: 'Crustáceos, moluscos' },
+    { name: 'Arroz Negro de Chipirón', description: 'Con alioli suave (min. 2 pers)', price: 28, allergens: 'Moluscos, huevo, pescado' },
+    { name: 'Paella Valenciana', description: 'Pollo, conejo, garrofón y judía verde (min. 2 pers)', price: 26, allergens: 'Sin alérgenos' },
+    { name: 'Arroz de Pato y Boletus', description: 'Arroz meloso con magret y setas de temporada (min. 2 pers)', price: 32, allergens: 'Sin alérgenos' },
+  ]
+
+  const postres = [
+    { name: 'Tarta de Queso Braseada', description: 'Con compota de frutos rojos y helado de vainilla', price: 12, allergens: 'Lácteos, gluten, huevo' },
+    { name: 'Coulant de Chocolate', description: 'Con helado de pistacho', price: 11, allergens: 'Lácteos, gluten, huevo, frutos secos' },
+    { name: 'Torrija de Brioche', description: 'Con helado de canela y caramelo salado', price: 10, allergens: 'Lácteos, gluten, huevo' },
+    { name: 'Crema Catalana', description: 'Receta tradicional caramelizada al momento', price: 9, allergens: 'Lácteos, huevo' },
+    { name: 'Mousse de Limón', description: 'Con merengue italiano y aire de albahaca', price: 10, allergens: 'Lácteos, huevo' },
+    { name: 'Tabla de Quesos Artesanales', description: 'Selección de 5 quesos con mermelada casera', price: 16, allergens: 'Lácteos, frutos secos' },
+  ]
+
+  const bebidas = [
+    { name: 'Vino Tinto Reserva', description: 'Ribera del Duero, Rioja, Priorat - Copa/Botella', price: 8 },
+    { name: 'Vino Blanco', description: 'Albariño, Verdejo, Rueda - Copa/Botella', price: 7 },
+    { name: 'Vino Rosado', description: 'Navarra, Cigales - Copa/Botella', price: 6 },
+    { name: 'Champagne', description: 'Moët & Chandon, Veuve Clicquot - Botella', price: 75 },
+    { name: 'Cava Brut Nature', description: 'DO Cava - Copa/Botella', price: 6 },
+    { name: 'Cerveza Artesanal', description: 'Selección nacional - 33cl', price: 5 },
+    { name: 'Agua Mineral', description: 'Con/Sin gas - 75cl', price: 3 },
+    { name: 'Refrescos Premium', description: 'Coca-Cola, Fanta, Nestea, Tónica', price: 4 },
   ]
 
   const menus = [
@@ -196,14 +180,6 @@ export default function Menu() {
     <section id="carta" className="relative bg-dark-900 section-padding overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 opacity-5">
-          <Image
-            src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=2940&auto=format&fit=crop"
-            alt="Background"
-            fill
-            className="object-cover"
-          />
-        </div>
         <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-dark-900/95 to-dark-950" />
       </div>
 
@@ -229,20 +205,60 @@ export default function Menu() {
         </motion.div>
 
         {/* Tabs */}
-        <div className="flex justify-center gap-4 mb-16">
+        <div className="flex flex-wrap justify-center gap-3 mb-16">
           <button
-            onClick={() => setActiveTab('dishes')}
-            className={`px-8 py-3 rounded-sm font-medium transition-all duration-300 ${
-              activeTab === 'dishes'
+            onClick={() => setActiveTab('entrantes')}
+            className={`px-6 py-3 rounded-sm font-medium transition-all duration-300 ${
+              activeTab === 'entrantes'
                 ? 'bg-primary-600 text-white'
                 : 'bg-dark-800 text-gray-400 hover:bg-dark-700'
             }`}
           >
-            Platos Destacados
+            Entrantes
+          </button>
+          <button
+            onClick={() => setActiveTab('principales')}
+            className={`px-6 py-3 rounded-sm font-medium transition-all duration-300 ${
+              activeTab === 'principales'
+                ? 'bg-primary-600 text-white'
+                : 'bg-dark-800 text-gray-400 hover:bg-dark-700'
+            }`}
+          >
+            Carnes & Pescados
+          </button>
+          <button
+            onClick={() => setActiveTab('arroces')}
+            className={`px-6 py-3 rounded-sm font-medium transition-all duration-300 ${
+              activeTab === 'arroces'
+                ? 'bg-primary-600 text-white'
+                : 'bg-dark-800 text-gray-400 hover:bg-dark-700'
+            }`}
+          >
+            Arroces
+          </button>
+          <button
+            onClick={() => setActiveTab('postres')}
+            className={`px-6 py-3 rounded-sm font-medium transition-all duration-300 ${
+              activeTab === 'postres'
+                ? 'bg-primary-600 text-white'
+                : 'bg-dark-800 text-gray-400 hover:bg-dark-700'
+            }`}
+          >
+            Postres
+          </button>
+          <button
+            onClick={() => setActiveTab('bebidas')}
+            className={`px-6 py-3 rounded-sm font-medium transition-all duration-300 ${
+              activeTab === 'bebidas'
+                ? 'bg-primary-600 text-white'
+                : 'bg-dark-800 text-gray-400 hover:bg-dark-700'
+            }`}
+          >
+            Bebidas
           </button>
           <button
             onClick={() => setActiveTab('menus')}
-            className={`px-8 py-3 rounded-sm font-medium transition-all duration-300 ${
+            className={`px-6 py-3 rounded-sm font-medium transition-all duration-300 ${
               activeTab === 'menus'
                 ? 'bg-primary-600 text-white'
                 : 'bg-dark-800 text-gray-400 hover:bg-dark-700'
@@ -253,13 +269,49 @@ export default function Menu() {
         </div>
 
         {/* Content */}
-        {activeTab === 'dishes' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-            {dishes.map((dish, index) => (
-              <DishCard key={index} dish={dish} index={index} />
+        {activeTab === 'entrantes' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            {entrantes.map((item, index) => (
+              <SimpleMenuItem key={index} item={item} index={index} />
             ))}
           </div>
-        ) : (
+        )}
+
+        {activeTab === 'principales' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            {principales.map((item, index) => (
+              <SimpleMenuItem key={index} item={item} index={index} />
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'arroces' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <p className="text-center text-gray-400 mb-6 italic">Todos nuestros arroces son para mínimo 2 personas</p>
+            {arroces.map((item, index) => (
+              <SimpleMenuItem key={index} item={item} index={index} />
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'postres' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            {postres.map((item, index) => (
+              <SimpleMenuItem key={index} item={item} index={index} />
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'bebidas' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <p className="text-center text-gray-400 mb-6">Consulta nuestra carta de vinos completa</p>
+            {bebidas.map((item, index) => (
+              <SimpleMenuItem key={index} item={item} index={index} />
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'menus' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {menus.map((menu, index) => (
               <MenuCard key={index} menu={menu} index={index} />
@@ -281,9 +333,6 @@ export default function Menu() {
           >
             Reservar Mesa
           </a>
-          <p className="text-gray-500 text-sm mt-4">
-            Carta completa disponible en el restaurante
-          </p>
         </motion.div>
       </div>
     </section>
