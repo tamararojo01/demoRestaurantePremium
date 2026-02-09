@@ -34,39 +34,38 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-4xl mx-auto"
         >
-          {/* Subtitle */}
-          <motion.p
+          {/* Brand */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-primary-400 text-sm md:text-base font-medium tracking-[0.3em] uppercase mb-6"
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mb-4"
           >
-            Experiencia Gastronómica
-          </motion.p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white">
+              <span className="text-primary-400">Brasa</span> & <span className="text-primary-400">Olivo</span>
+            </h1>
+          </motion.div>
 
           {/* Main Heading */}
-          <motion.h1
+          <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-6 leading-tight"
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6 leading-tight"
           >
-            Alta Cocina
+            Alta cocina mediterránea
             <br />
-            <span className="text-primary-400">Mediterránea</span>
-            <br />
-            a la Brasa
-          </motion.h1>
+            a la brasa
+          </motion.h2>
 
-          {/* Description */}
+          {/* Commercial Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="text-gray-200 text-xl md:text-2xl max-w-2xl mx-auto mb-10 leading-relaxed font-medium"
           >
-            Donde la tradición se encuentra con la innovación.
-            Producto de temporada, fuego y pasión en cada plato.
+            Reserva tu mesa en segundos o descubre nuestra carta
           </motion.p>
 
           {/* CTA Buttons */}
@@ -78,15 +77,15 @@ export default function Hero() {
           >
             <button
               onClick={() => scrollToSection('#reservas')}
-              className="btn-primary w-full sm:w-auto"
+              className="btn-primary w-full sm:w-auto text-lg px-10 py-5 shadow-2xl hover:shadow-primary-500/50"
             >
-              Reservar Mesa
+              👉 Reservar mesa
             </button>
             <button
               onClick={() => scrollToSection('#carta')}
-              className="btn-secondary w-full sm:w-auto"
+              className="btn-secondary w-full sm:w-auto text-lg px-10 py-5"
             >
-              Ver Carta
+              👉 Ver carta
             </button>
           </motion.div>
         </motion.div>

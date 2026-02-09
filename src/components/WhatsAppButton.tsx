@@ -8,7 +8,7 @@ export default function WhatsAppButton() {
   
   const whatsappNumber = '34600000000'
   const whatsappMessage = encodeURIComponent(
-    'Hola, me gustaría obtener más información sobre el restaurante Brasa & Olivo'
+    '¡Hola! Me gustaría reservar una mesa en Brasa & Olivo 🍽️'
   )
 
   return (
@@ -23,8 +23,8 @@ export default function WhatsAppButton() {
       whileTap={{ scale: 0.9 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-green-600 hover:bg-green-700 rounded-full shadow-2xl flex items-center justify-center group transition-all duration-300"
-      aria-label="Contactar por WhatsApp"
+      className="fixed bottom-6 right-6 z-50 w-16 h-16 md:w-20 md:h-20 bg-green-600 hover:bg-green-700 rounded-full shadow-2xl flex items-center justify-center group transition-all duration-300"
+      aria-label="Reservar por WhatsApp"
     >
       {/* Pulse animation */}
       <motion.div
@@ -35,7 +35,7 @@ export default function WhatsAppButton() {
 
       {/* Icon */}
       <svg
-        className="w-8 h-8 text-white relative z-10"
+        className="w-8 h-8 md:w-10 md:h-10 text-white relative z-10"
         fill="currentColor"
         viewBox="0 0 24 24"
       >
@@ -46,9 +46,9 @@ export default function WhatsAppButton() {
       <motion.div
         initial={{ opacity: 0, x: 10 }}
         animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : 10 }}
-        className="absolute right-full mr-4 px-4 py-2 bg-dark-900 text-white text-sm font-medium rounded-sm whitespace-nowrap shadow-xl pointer-events-none"
+        className="absolute right-full mr-4 px-5 py-3 bg-dark-900 text-white text-sm md:text-base font-medium rounded-sm whitespace-nowrap shadow-xl pointer-events-none"
       >
-        ¿Necesitas ayuda?
+        💬 Reserva por WhatsApp
         <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
           <div className="border-8 border-transparent border-l-dark-900" />
         </div>
